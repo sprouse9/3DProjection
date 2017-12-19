@@ -176,6 +176,7 @@ DIST          = ../../../Qt/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.7/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.7/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.7/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.7/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.7/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.7/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -198,7 +199,8 @@ DIST          = ../../../Qt/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.7/clang_64/mkspecs/features/exceptions.prf \
 		../../../Qt/5.7/clang_64/mkspecs/features/yacc.prf \
 		../../../Qt/5.7/clang_64/mkspecs/features/lex.prf \
-		3Dto2DProjection.pro canvaswidget.h main.cpp \
+		3Dto2DProjection.pro canvaswidget.h \
+		vertexdata.h main.cpp \
 		canvaswidget.cpp
 QMAKE_TARGET  = 3Dto2DProjection
 DESTDIR       = 
@@ -335,6 +337,7 @@ Makefile: 3Dto2DProjection.pro ../../../Qt/5.7/clang_64/mkspecs/macx-clang/qmake
 		../../../Qt/5.7/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.7/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.7/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.7/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.7/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.7/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -485,6 +488,7 @@ Makefile: 3Dto2DProjection.pro ../../../Qt/5.7/clang_64/mkspecs/macx-clang/qmake
 ../../../Qt/5.7/clang_64/mkspecs/features/qt_config.prf:
 ../../../Qt/5.7/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../Qt/5.7/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/5.7/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/5.7/clang_64/mkspecs/features/default_pre.prf:
 ../../../Qt/5.7/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -540,7 +544,7 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents canvaswidget.h $(DISTDIR)/
+	$(COPY_FILE) --parents canvaswidget.h vertexdata.h $(DISTDIR)/
 	$(COPY_FILE) --parents main.cpp canvaswidget.cpp $(DISTDIR)/
 
 
@@ -576,8 +580,7 @@ moc_canvaswidget.cpp: ../../../Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/Q
 		../../../Qt/5.7/clang_64/lib/QtGui.framework/Headers/qpainter.h \
 		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/QtMath \
 		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/qmath.h \
-		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/QThread \
-		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/qthread.h \
+		vertexdata.h \
 		canvaswidget.h \
 		../../../Qt/5.7/clang_64/bin/moc
 	/Users/randy/Qt/5.7/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -D__APPLE_CC__ -I/Users/randy/Qt/5.7/clang_64/mkspecs/macx-clang -I/Users/randy/Documents/QtDev/3Dto2DProjection -I/Users/randy/Qt/5.7/clang_64/lib/QtWidgets.framework/Headers -I/Users/randy/Qt/5.7/clang_64/lib/QtGui.framework/Headers -I/Users/randy/Qt/5.7/clang_64/lib/QtCore.framework/Headers -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1 -I/usr/local/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/8.1.0/include -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include -I/usr/include -I'/System/Library/Frameworks (framework directory)' -I'/Library/Frameworks (framework directory)' -F/Users/randy/Qt/5.7/clang_64/lib canvaswidget.h -o moc_canvaswidget.cpp
@@ -605,8 +608,7 @@ main.o: main.cpp canvaswidget.h \
 		../../../Qt/5.7/clang_64/lib/QtGui.framework/Headers/qpainter.h \
 		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/QtMath \
 		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/qmath.h \
-		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/QThread \
-		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/qthread.h \
+		vertexdata.h \
 		../../../Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/QApplication \
 		../../../Qt/5.7/clang_64/lib/QtWidgets.framework/Headers/qapplication.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
@@ -618,8 +620,7 @@ canvaswidget.o: canvaswidget.cpp canvaswidget.h \
 		../../../Qt/5.7/clang_64/lib/QtGui.framework/Headers/qpainter.h \
 		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/QtMath \
 		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/qmath.h \
-		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/QThread \
-		../../../Qt/5.7/clang_64/lib/QtCore.framework/Headers/qthread.h
+		vertexdata.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o canvaswidget.o canvaswidget.cpp
 
 moc_canvaswidget.o: moc_canvaswidget.cpp 

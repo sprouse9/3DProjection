@@ -28,4 +28,5 @@ SOURCES += \
         canvaswidget.cpp
 
 HEADERS += \
-        canvaswidget.h
+        canvaswidget.h \
+    vertexdata.h
