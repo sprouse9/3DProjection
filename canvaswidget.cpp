@@ -5,8 +5,8 @@ using namespace std;
 CanvasWidget::CanvasWidget(QWidget *parent)
     : QWidget(parent)
 {
-    worldToCamera[3][1] = -10;
-    worldToCamera[3][2] = -20;
+//    worldToCamera[3][1] = -10;
+//    worldToCamera[3][2] = -20;
 
     // set the basic projection matrix
     float scale = 1 / tan(angleOfView * 0.5 * M_PI / 180);
@@ -34,13 +34,13 @@ void CanvasWidget::paintEvent(QPaintEvent *event)
     painter.drawRoundedRect(r, 20, 10);
     //painter.save();
 
-//    r.adjust(2, 2, -2, -2);
-//    painter.setViewport(r);
-//    r.moveTo(-r.width()/2, -r.height()/2);  // Set origin to center
-//    painter.setWindow(r);
+    r.adjust(2, 2, -2, -2);
+    painter.setViewport(r);
+    r.moveTo(-r.width()/2, -r.height()/2);  // Set origin to center
+    painter.setWindow(r);
     //drawChart(&painter, r);
 
-    float scale = 10;
+    float scale = 1;
     int temp_cube[8][2] = {{0}};
     int numVertices = 8;
 
