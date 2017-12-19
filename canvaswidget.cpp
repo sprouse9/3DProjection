@@ -1,4 +1,5 @@
 #include "canvaswidget.h"
+#include "vertexdata.h"
 
 using namespace std;
 
@@ -27,27 +28,28 @@ void CanvasWidget::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     //painter.setRenderHint(QPainter::Antialiasing, true);
     QPen pen(Qt::black);
-    pen.setWidth(2);
+    pen.setWidth(1);
     painter.setPen(pen);
 
-    QRect r = rect().adjusted(10, 10, -10, -10);
-    painter.drawRoundedRect(r, 20, 10);
+//    QRect r = rect().adjusted(10, 10, -10, -10);
+//    painter.drawRoundedRect(r, 20, 10);
     //painter.save();
 
-    r.adjust(2, 2, -2, -2);
-    painter.setViewport(r);
-    r.moveTo(-r.width()/2, -r.height()/2);  // Set origin to center
-    painter.setWindow(r);
+//    r.adjust(2, 2, -2, -2);
+//    painter.setViewport(r);
+//    r.moveTo(-r.width()/2, -r.height()/2);  // Set origin to center
+//    painter.setWindow(r);
     //drawChart(&painter, r);
 
     float scale = 1;
-    int temp_cube[8][2] = {{0}};
-    int numVertices = 8;
+
+    //int temp_cube[numVertices][2] = {{0}};
+    //int numVertices = 8;
 
     unsigned char *buffer = new unsigned char[imageWidth * imageHeight];
     memset(buffer, 0x0, imageWidth * imageHeight);
 
-    for (int i = 0; i < numVertices; ++i) {
+    for (uint32_t i = 0; i < numVertices; ++i) {
         //cout << i<< ": (" << vertices[i][0] << ", " << vertices[i][1] <<", " << vertices[i][2] << ") ==> ";
 
         float vertCamera[3] = {0}, projectedVert[3] = {0};
@@ -61,87 +63,80 @@ void CanvasWidget::paintEvent(QPaintEvent *event)
         uint32_t y = std::min(imageHeight - 1,(uint32_t)((1 - (projectedVert[1] + 1) * 0.5) * imageHeight));
         buffer[y * imageWidth + x] = 255;
 
-        temp_cube[i][0] = x;
-        temp_cube[i][1] = y;
+//        temp_cube[i][0] = x;
+//        temp_cube[i][1] = y;
 
         //cout << "(" << temp_cube[i][0] << ", " << temp_cube[i][1] << ")" << endl;
+
+        painter.drawPoint(scale*x, scale*y);
+        //rotateVertex( vertices[i] );
 
     }
-
-
-
-
-
-    // loop thru model (cube) and divide the x,y coord by the z coord
-    // to project the point on the canvas
-    //for(int i=0 ; i<8 ; i++) {
-        //cout << i<< ": (" << cube[i][0] << ", " << cube[i][1] <<", " << cube[i][2] << ") ==> ";
-        //float x_proj = cube[i][0] / -cube[i][2];
-        //float y_proj = cube[i][1] / -cube[i][2];
-
-        //float x_proj_remap = (1 + x_proj) / 2;
-        //float y_proj_remap = (1 + y_proj) / 2;
-
-        //temp_cube[i][0] = x_proj_remap * this->rect().width()/2;
-        //temp_cube[i][1] = y_proj_remap * this->rect().height()/2;
-
-        //cout << "(" << temp_cube[i][0] << ", " << temp_cube[i][1] << ")" << endl;
-    //}
 
 
 
     // Loop thru the indexBuffer to build the cube
-    for( int i = 0 ; i < 12 ; i++) {
+    //for( int i = 0 ; i < 12 ; i++) {
 
         // draw a line from  indexBuffer[i][0] --> indexBuffer[i][1]
-        int a = indexBuffer[i][0];  // from
-        int b = indexBuffer[i][1];  // to
+      //  int a = indexBuffer[i][0];  // from
+       // int b = indexBuffer[i][1];  // to
 
-        painter.drawLine( scale*temp_cube[a][0], scale*temp_cube[a][1],
-                            scale*temp_cube[b][0], scale*temp_cube[b][1]);
-
-//        cube[a][0];     // x-coord
-//        cube[a][1];     // y-coord
-//        cube[a][2];     // z-coord
-
-        //cout << cube[a][0] << endl;
-//        painter.drawLine(   scale*cube[a][0] / cube[a][2], scale*cube[a][1] / cube[a][2],
-//                            scale*cube[b][0] / cube[b][2], scale*cube[b][1] / cube[b][2] );
-
-        //painter.drawLine(   temp_cube[a][0], -temp_cube[a][1],
-        //                    temp_cube[b][0], -temp_cube[b][1] );
-
-    }
+        //painter.drawLine( scale*temp_cube[a][0], scale*temp_cube[a][1],
+         //                   scale*temp_cube[b][0], scale*temp_cube[b][1]);
+    //}
 
     //rotateCube();
     //painter.drawLine( 0,0, 100, -100);
 
-    painter.drawText(10, 10, 100, 20, 0, QString::number(this->rect().center().x()) + ", " +
-                                         QString::number(this->rect().center().y()) );
+    painter.drawText(10, 10, 100, 20, 0, QString::number(this->rect().width()) + ", " +
+                                         QString::number(this->rect().height()) );
     //painter.restore();
+
 }
 
 //void CanvasWidget::rotateCube(float &temp_cube)
-//{
-//    float temp[3];
+/*{
+    float temp[3];
 
-//    // rotate the cube
-//    for(int i=0 ; i<8 ; i++) {
-//        temp[0] = temp_cube[i][0];
-//        temp[1] = temp_cube[i][1];
-//        temp[2] = temp_cube[i][2];
+    // rotate the cube
+    for(int i=0 ; i<8 ; i++) {
+        temp[0] = temp_cube[i][0];
+        temp[1] = temp_cube[i][1];
+        temp[2] = temp_cube[i][2];
 
-//        for(int j=0 ; j<3 ; j++) {
-//            for(int k=0 ; k<3 ; k++)
-//                temp_cube[i][j] += temp[k] * RotM[k][j];
-//        }
-//    }
+        for(int j=0 ; j<3 ; j++) {
+            for(int k=0 ; k<3 ; k++)
+                temp_cube[i][j] += temp[k] * RotM[k][j];
+        }
+    }*/
 
 //    float RotM[3][3] = {
 //            { cost,  sint, 0 },
 //            { -sint, cost, 0 },
 //            {     0,    0, 1 }};
 //}
+
+void CanvasWidget::rotateVertex( float *in )
+{
+    float temp[3];
+
+    // rotate the vertice
+
+        temp[0] = *(in+0);
+        temp[1] = *(in+1);
+        temp[2] = *(in+2);
+
+        for(int j=0 ; j<3 ; j++) {
+            for(int k=0 ; k<3 ; k++)
+                *(in+j) += temp[k] * RotM[k][j];
+        }
+
+//    float RotM[3][3] = {
+//            { cost,  sint, 0 },
+//            { -sint, cost, 0 },
+//            {     0,    0, 1 }};
+}
 
 
 //void CanvasWidget::setProjectionMatrix(const float &angleOfView, const float &near, const float &far)
@@ -158,8 +153,6 @@ void CanvasWidget::paintEvent(QPaintEvent *event)
 //}
 
 void CanvasWidget::multPointMatrix(const float *in, float *out, const float (&M)[4][4]) {
-    // multPointMatrix(vertices[i], vertCamera, worldToCamera)
-    float t = 0;
     // out = in * M;
 
 //    *(out+0) = 9; *(out+1) = 29; out[2] = 59;
@@ -167,7 +160,7 @@ void CanvasWidget::multPointMatrix(const float *in, float *out, const float (&M)
     *(out+0) = *(in+0) * M[0][0] + *(in+1) * M[1][0] + *(in+2) * M[2][0] + M[3][0];
     *(out+1) = *(in+0) * M[0][1] + *(in+1) * M[1][1] + *(in+2) * M[2][1] + M[3][1];
     *(out+2) = *(in+0) * M[0][2] + *(in+1) * M[1][2] + *(in+2) * M[2][2] + M[3][2];
-//@0x7fff5fbffa10
+
     float w  = *(in+0) * M[0][3] + *(in+1) * M[1][3] + *(in+2) * M[2][3] + M[3][3];
 
     // normalize if w is different than 1 (convert from homogeneous to Cartesian coordinates)
@@ -177,5 +170,5 @@ void CanvasWidget::multPointMatrix(const float *in, float *out, const float (&M)
         *(out+2) /= w;
     }
 
-    cout << "out[]=" << "{" << *(out+0) << ", " << *(out+1) << endl;
+    //cout << "out[]=" << "{" << *(out+0) << ", " << *(out+1) << endl;
 }
